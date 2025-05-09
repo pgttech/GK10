@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+ <head>
+  <meta charset="UTF-8">
+  <title>GK 10</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <style>
+html {
+  background-color: #e6f2ff;
+}
+   :root {
+/*    --bg-color: #f0f2f5;*/
+    --container-bg: #ffffff;
+    --text-color: #333;
+    --accent-color: #007bff;
+    --hover-color: #0056b3;
+   }
+
+   body.dark {
+    --bg-color: #1e1e1e;
+    --container-bg: #2c2c2c;
+    --text-color: #f0f0f0;
+    --accent-color: #4dabf7;
+    --hover-color: #1c7ed6;
+   }
+
+   * {
+    box-sizing: border-box;
+   }
+
+body {
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+  padding: 20px 20px 0 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+
+
+   .setup-container, .container {
+    max-width: 900px;
+    margin: auto;
+    background: var(--container-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+   }
+
+   h2 {
+    text-align: center;
+   }
+
+   .input-group {
+    margin-bottom: 20px;
+   }
+
+   .input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+   }
+
+   .input-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+   }
+
+   .timer {
+    text-align: right;
+    color: #d9534f;
+    font-weight: bold;
+    margin-bottom: 10px;
+   }
+
+   .progress-container {
+    width: 100%;
+    background-color: #ddd;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+   }
+
+   .progress-bar {
+    height: 100%;
+    width: 100%;
+    background-color: #28a745;
+    transition: width 1s linear;
+   }
+
+   .question {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+   }
+
+   .question p {
+    font-weight: bold;
+    color: #3399FF;
+
+   }
+
+   label {
+    display: block;
+    margin: 5px 0;
+    cursor: pointer;
+    color: green;
+   }
+
+   input[type="radio"] {
+    margin-right: 8px;
+   }
+
+   button {
+    background: var(--accent-color);
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 100%;
+   }
+
+   button:hover {
+    background-color: var(--hover-color);
+   }
+
+   #result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+   }
+
+   /*    .logo {
+   position: absolute;
+   top: 10px;
+   right: 10px;
+   max-height: 50px;
+   }*/
+
+   .dark-toggle {
+    text-align: right;
+    margin-bottom: 10px;
+    max-width: 10%;
+   }
+
+   .setup-container input[type="text"],
+   .setup-container input[type="email"] {
+    width: 300px;     /* wider */
+    height: 40px;     /* taller */
+    font-size: 16px;  /* more readable */
+    padding: 5px 10px;
+    margin-bottom: 15px;
+   }
+   .size {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+   }
+  <style>
+    /* ... existing styles ... */
+
+    @media (max-width: 600px) {
+      button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+
+      .setup-container input[type="text"],
+      .setup-container input[type="email"] {
+        font-size: 14px;
+        height: 36px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .marquee-footer {
+        font-size: 14px;
+        text-align: center;
+        padding: 10px;
+      }
+    }
+  </style>
+
+  </style>
+ </head>
+
+ <body>
+  <div class="dark-toggle" style="visibility: hidden;">
+   <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+
+<div class="setup-container" id="setup-section" style="position: relative;">
+  <div style="position: absolute; top: 10px; right: 15px;">
+    <img src="logo2.png" alt="Secondary Logo" style="max-height: 40px;">
+  </div>
+  <h3 style="text-align: center"><a href="http://www.patelgtech.com">www.patelgtech.com</a></h3>
+   <form id="setupForm">
+    <label for="candidateName" class="size">Name:*</label>
+    <input type="text" id="candidateName" name="candidateName" required>
+
+    <label for="candidateEmail" class="size">Email:*</label>
+    <input type="email" id="candidateEmail" name="candidateEmail" required>
+
+    <button type="button" id="startQuiz" onclick="startQuiz()" style="font-weight: bold;">Click to Start</button>
+   </form>
+
+  </div>
+  <div id="quiz-content" style="display: none;">
+   <div class="container">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+     <h2 style="margin: 0;text-align: left;"><u>Answer the Below Questions</u></h2>
+     <img src="your-logo.png" alt="Quiz Logo" class="logo" style="max-height: 50px;">
+    </div>
+    <p>&#x00A0;</p>
+    <div class="timer" id="timer">Time left:</div>
+    <div class="progress-container">
+     <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <form id="quizForm">
+     <div id="quizContainer"></div>
+     <button type="submit" style="font-weight: bold;">Submit Your Answer</button>
+    </form>
+    <div id="result"></div>
+   </div>
+  </div>
+<script>
+const questions = [
+  { q: "1. You receive an email asking for your bank password to “verify your account.” What should you do?", options: ["Reply with the password", "Call your bank", "Click the link and log in", "Mark it as spam and delete it"], answer: 3 },
+  { q: "2. You’re stuck in traffic and getting late. What’s the most logical thing to do?", options: ["Honk constantly", "Take the wrong lane", "Stay calm and inform whoever is waiting", "Abandon your vehicle"], answer: 2 },
+  { q: "3. Which is the best way to create a strong password?", options: ["Your birthdate", "Your name + 123", "A mix of letters, numbers, and symbols", "Your phone number"], answer: 2 },
+  { q: "4. Which of these would best help you track your monthly spending?", options: ["Cash only", "Excel or a budgeting app", "Buying randomly", "Relying on memory"], answer: 1 },
+  { q: "5. A person on a video call has a blurry camera. What’s the first thing they should do?", options: ["Reboot the PC", "Wipe the lens", "Change device", "Yell at the internet provider"], answer: 1 },
+  { q: "6. If a public Wi-Fi asks for no password, what is the smart action?", options: ["Use it for banking", "Avoid using personal info", "Share it with friends", "Download large files"], answer: 1 },
+  { q: "7. Which of these shows emotional intelligence?", options: ["Interrupting people", "Ignoring someone’s feelings", "Listening actively and responding calmly", "Giving advice without hearing"], answer: 2 },
+  { q: "8. You have ₹500 left for the week. What’s the most responsible next step?", options: ["Order food online", "Buy unnecessary things", "Create a basic meal/transport plan", "Use a credit card anyway"], answer: 2 },
+  { q: "9. Which is the safest way to back up your important documents?", options: ["Keep on desktop", "Email to yourself", "Save to cloud + external drive", "Print and store in wallet"], answer: 2 },
+  { q: "10. What’s the best way to spot fake news on social media?", options: ["Read only the headline", "Share if it’s shocking", "Verify from trusted sources", "Assume it's true if viral"], answer: 2 }
+];
+  const quizContainer = document.getElementById('quizContainer');
+
+  document.getElementById("quizForm").addEventListener("submit", function (e) {
+   e.preventDefault(); // Prevent the default form submission
+
+   // Check if all questions have an answer
+   let allAnswered = true;
+   questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!selected) {
+     allAnswered = false;
+     alert(`Please answer question ${i + 1}.`); // Show the popup
+     return; // Exit the forEach loop early as we found an unanswered question
+    }
+   });
+
+   // If not all questions are answered, stop the submission here
+   if (!allAnswered) {
+    return;
+   }
+
+   clearInterval(timer); // Stop the timer
+
+   const name = document.getElementById("candidateName").value.trim();
+   const email = document.getElementById("candidateEmail").value.trim();
+   let score = 0;
+   const answers = [];
+
+   questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const selectedValue = selected ? parseInt(selected.value) : -1;
+    if (selectedValue === q.answer) score++;
+    answers.push({
+     Question: q.q,
+     Selected: selected ? q.options[selectedValue] : "No answer",
+     Correct: q.options[q.answer],
+     IsCorrect: selectedValue === q.answer ? "Yes" : "No"
+    });
+   });
+
+   document.getElementById("result").textContent = "Thank You!";
+   setTimeout(() => {
+    window.location.href = "https://www.google.com";
+   }, 3000); // Redirect after 3 seconds
+
+   const data = [
+    {
+     Name: name,
+     Email: email,
+     Score: `${score}/${questions.length}`,
+     Timestamp: new Date().toLocaleString()
+    },
+    ...answers
+   ];
+
+   const worksheet = XLSX.utils.json_to_sheet(data, {
+    skipHeader: false
+   });
+   const workbook = XLSX.utils.book_new();
+   XLSX.utils.book_append_sheet(workbook, worksheet, "Quiz Results");
+
+   // Save the Excel file to the specified path
+   const path = 'Result_' + name.replace(/\s+/g, "_") + '.xlsx';
+   XLSX.writeFile(workbook, path);
+  });
+
+  function toggleDarkMode() {
+   document.body.classList.toggle("dark");
+  }
+
+  let timer;
+  let totalSeconds = 10 * 60; // Default to 15 minutes
+  let remainingSeconds = totalSeconds;
+
+  function startTimer() {
+   timer = setInterval(() => {
+    remainingSeconds--;
+
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = remainingSeconds % 60;
+
+    document.getElementById("timer").textContent = `Time left: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    const progress = (remainingSeconds / totalSeconds) * 100;
+    document.getElementById("progressBar").style.width = `${progress}%`;
+
+    if (remainingSeconds <= 0) {
+     clearInterval(timer);
+     document.getElementById("quizForm").submit(); // Auto-submit
+    }
+   }, 1000);
+  }
+
+  document.getElementById("startQuiz").addEventListener("click", function () {
+   const name = document.getElementById("candidateName").value.trim();
+   const email = document.getElementById("candidateEmail").value.trim();
+
+   if (!name || !email) {
+    alert("Please enter your name and email before starting the quiz.");
+    return;
+   }
+
+   // Hide setup and show quiz
+   document.querySelector(".setup-container").style.display = "none";
+   document.getElementById("quiz-content").style.display = "block";
+
+   // Populate quiz questions dynamically
+   quizContainer.innerHTML = '';  // Clear any previous content
+   questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = `<p>${q.q}</p>` + q.options.map((opt, j) => `
+    <label><input type="radio" name="q${i}" value="${j}">${opt}</label>`).join('');
+    quizContainer.appendChild(div);
+   });
+
+   startTimer();
+  });
+
+
+  window.addEventListener("beforeunload", function (e) {
+   e.preventDefault();
+   e.returnValue = "";
+  });
+
+ // Define the unload warning function
+  function unloadWarning(e) {
+   e.preventDefault();
+   e.returnValue = '';
+  }
+
+  // Enable warning on page unload (refresh, close, etc.)
+  window.addEventListener("beforeunload", unloadWarning);
+ </script>
+<marquee behavior="scroll" direction="left"
+ style="position: fixed; bottom: 0; left: 0; width: 100%; background: #007bff; color: white; padding: 10px; font-weight: bold; z-index: 9999; margin: 0;">
+  © 2025 PatelGTech. All rights reserved.            © 2025 PatelGTech Llp. All rights reserved.            © 2025 PatelGTech Llp. All rights reserved.            © 2025 PatelGTech Llp. All rights reserved.
+</marquee>
+ </body>
+
+</html>
